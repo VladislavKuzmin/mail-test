@@ -12,29 +12,34 @@ public class Main {
     public static void main(String[] args) {
         System.setProperty("webdriver.chrome.driver", "D:\\chromedriver.exe");
         WebDriver driver = new ChromeDriver();
-        ;
+
         String userName = "test123456789te5t";
         String password = "AOaTUo)iea12";
 
-        String url = "https://account.mail.ru/login/?mode=simple&v=2.8.2&account_host=account.mail.ru&type=login&allow_external=1&app_id_mytracker=58519&success_redirect=https%3A%2F%2Fe.mail.ru%2Fmessages%2Finbox%3Fback%3D1&project=home&from=navi&parent_url=https%3A%2F%2Fmail.ru%2F";
+        final String URL = "https://mail.ru/";
 
-        driver.get(url);
+        driver.get(URL);
 
-        WebElement loginField = new WebDriverWait(driver, Duration.ofSeconds(10)).
-                until(ExpectedConditions.presenceOfElementLocated(By.name("username")));
-        loginField.sendKeys(userName);
-        driver.findElement(By.xpath("/html/body/div[1]/div[2]/div/div/div/div[2]/div/div/form/div[2]/div[2]/div[3]/div/div/div[1]/button")).click();
+        driver.findElement(By.xpath("//*[@id=\"mailbox\"]/div[1]/button")).click();
 
-        WebElement passwordField = new WebDriverWait(driver, Duration.ofSeconds(10)).
-                until(ExpectedConditions.presenceOfElementLocated(By.name("password")));
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));  //???
-        passwordField.sendKeys(password);
-        driver.findElement(By.xpath("/html/body/div[1]/div[2]/div/div/div/div[2]/div/div/form/div[2]/div/div[3]/div/div/div[1]/div/button")).click();
+        WebElement loginFrame = new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(ExpectedConditions.presenceOfElementLocated(By.xpath("/html/body/div[3]/div/iframe")));
+        driver.switchTo().frame(loginFrame);
+
+        WebElement loginField = new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[@id=\"root\"]/div/div/div/div[2]/div/div/form/div[2]/div[2]/div[1]/div/div/div/div/div/div[1]/div/input")));
+        loginField.sendKeys(userName + Keys.ENTER);
+
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));  //не понятно
+
+        WebElement passwordField = new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[@id=\"root\"]/div/div/div/div[2]/div/div/form/div[2]/div/div[2]/div/div/div/div/div/input")));
+        passwordField.sendKeys(password + Keys.ENTER);
 
         WebElement sendLetterField;
         try {
             sendLetterField = new WebDriverWait(driver, Duration.ofSeconds(10))
-                    .until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[@id=\"app-canvas\"]/div/div[1]/div[1]/div/div[2]/span/div[1]/div[1]/div/div/div/div[1]/div/div/a"))); //fulscreen
+                    .until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[@id=\"app-canvas\"]/div/div[1]/div[1]/div/div[2]/span/div[1]/div[1]/div/div/div/div[1]/div/div/a"))); //не понятно
             sendLetterField.click();
         }
         catch (Exception e){
@@ -43,7 +48,7 @@ public class Main {
             sendLetterField.click();
         }
 
-        driver.findElement(By.xpath("/html/body/div[1]/div/div[2]/div/div[1]/div[2]/div[3]/div[5]/div/div/div[2]/div[1]/div[1]")).sendKeys("Заяц вор");
+        driver.findElement(By.xpath("/html/body/div[1]/div/div[2]/div/div[1]/div[2]/div[3]/div[5]/div/div/div[2]/div[1]/div[1]")).sendKeys("some text");
 
         driver.findElement(By.xpath("/html/body/div[1]/div/div[2]/div/div[2]/div[1]/span[2]/span/span")).click();
         driver.quit();
