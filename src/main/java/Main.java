@@ -18,16 +18,27 @@ public class Main {
         WebDriver driver = new ChromeDriver();
 
         driver.get(url);
-        // driver.findElement(By.xpath("/html/body/main/div[2]/div[1]/div[1]/div[2]/div[1]/button")).click();
-        //
+        driver.manage().window().maximize();
         WebElement loginField = new WebDriverWait(driver, Duration.ofSeconds(10)).
                 until(ExpectedConditions.presenceOfElementLocated(By.name("username")));
         loginField.sendKeys(userName);
         driver.findElement(By.xpath("/html/body/div[1]/div[2]/div/div/div/div[2]/div/div/form/div[2]/div[2]/div[3]/div/div/div[1]/button")).click();
+
         WebElement passwordField = new WebDriverWait(driver, Duration.ofSeconds(10)).
                 until(ExpectedConditions.presenceOfElementLocated(By.name("password")));
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));  //???
         passwordField.sendKeys(password);
         driver.findElement(By.xpath("/html/body/div[1]/div[2]/div/div/div/div[2]/div/div/form/div[2]/div/div[3]/div/div/div[1]/div/button")).click();
+        WebElement sendLetterField;
+
+        sendLetterField = new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[@id=\"app-canvas\"]/div/div[1]/div[1]/div/div[2]/span/div[1]/div[1]/div/div/div/div[1]/div/div/a")));
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+        sendLetterField.click();
+
+        driver.findElement(By.xpath("/html/body/div[1]/div/div[2]/div/div[1]/div[2]/div[3]/div[5]/div/div/div[2]/div[1]/div[1]")).sendKeys("Заяц вор");
+
+        driver.findElement(By.xpath("/html/body/div[1]/div/div[2]/div/div[2]/div[1]/span[2]/span/span")).click();
+        driver.quit();
     }
 }
