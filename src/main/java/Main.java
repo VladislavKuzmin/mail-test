@@ -10,8 +10,10 @@ import java.time.Duration;
 
 public class Main {
     public static void main(String[] args) {
+        
         System.setProperty("webdriver.chrome.driver", "D:\\chromedriver.exe");
         WebDriver driver = new ChromeDriver();
+        
         driver.get("https://mail.ru/");
 
         String username = "test123456789te5t";
@@ -27,15 +29,8 @@ public class Main {
                 .pressSendLetterButton()
                 .pressSaveButton();
 
-//        loginPage.pressLoginButton();
-//        loginPage.switchToLoginFrame();
-//        loginPage.typeUsername(username);
-//        loginPage.typePassword(password);
-//        loginPage.pressSubmitButton()
-//                .pressSendLetterButton()
-//                .pressSaveButton();
-
         driver.quit();
         System.out.println("test passed");
+        
     }
 }
