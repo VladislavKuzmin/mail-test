@@ -20,38 +20,31 @@ public class Main {
 
         driver.get(URL);
 
-        driver.findElement(By.xpath("//*[@id=\"mailbox\"]/div[1]/button")).click();
+        driver.findElement(By.xpath("//button[@data-testid='enter-mail-primary']")).click();
 
         WebElement loginFrame = new WebDriverWait(driver, Duration.ofSeconds(10))
-                .until(ExpectedConditions.presenceOfElementLocated(By.xpath("/html/body/div[3]/div/iframe")));
+                .until(ExpectedConditions.presenceOfElementLocated(By.xpath("//iframe[@class='ag-popup__frame__layout__iframe']")));
         driver.switchTo().frame(loginFrame);
 
         WebElement loginField = new WebDriverWait(driver, Duration.ofSeconds(10))
-                .until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[@id=\"root\"]/div/div/div/div[2]/div/div/form/div[2]/div[2]/div[1]/div/div/div/div/div/div[1]/div/input")));
+                .until(ExpectedConditions.presenceOfElementLocated(By.xpath("//input[@name='username']")));
         loginField.sendKeys(userName + Keys.ENTER);
 
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));  //не понятно
+          driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));  //не понятно
 
-        WebElement passwordField = new WebDriverWait(driver, Duration.ofSeconds(10))
-                .until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[@id=\"root\"]/div/div/div/div[2]/div/div/form/div[2]/div/div[2]/div/div/div/div/div/input")));
+        WebElement passwordField = new WebDriverWait(driver, Duration.ofSeconds(20))
+                .until(ExpectedConditions.elementToBeClickable(By.xpath("//input[@name='password']")));
         passwordField.sendKeys(password + Keys.ENTER);
 
-        WebElement sendLetterField;
-        try {
-            sendLetterField = new WebDriverWait(driver, Duration.ofSeconds(10))
-                    .until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[@id=\"app-canvas\"]/div/div[1]/div[1]/div/div[2]/span/div[1]/div[1]/div/div/div/div[1]/div/div/a"))); //не понятно
-            sendLetterField.click();
-        }
-        catch (Exception e){
-            sendLetterField = new WebDriverWait(driver, Duration.ofSeconds(10))
-                    .until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[@id=\"app-canvas\"]/div/div[1]/div[1]/div/div[2]/span/div[1]/div[1]/div/div/div/div[1]/div/div/a")));
-            sendLetterField.click();
-        }
+        WebElement sendLetterField = new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@title='Написать письмо']")));
+        sendLetterField.click();
 
-        driver.findElement(By.xpath("/html/body/div[1]/div/div[2]/div/div[1]/div[2]/div[3]/div[5]/div/div/div[2]/div[1]/div[1]")).sendKeys("some text");
+        driver.findElement(By.xpath("//div[@tabindex='505']")).sendKeys("some text");
 
-        driver.findElement(By.xpath("/html/body/div[1]/div/div[2]/div/div[2]/div[1]/span[2]/span/span")).click();
+        driver.findElement(By.xpath("//span[@title='Сохранить']")).click();
+
         driver.quit();
-        System.out.println("test completed");
+        System.out.println("test passed");
     }
 }
