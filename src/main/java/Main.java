@@ -30,7 +30,7 @@ public class Main {
                 .until(ExpectedConditions.presenceOfElementLocated(By.xpath("//input[@name='username']")));
         loginField.sendKeys(userName + Keys.ENTER);
 
-          driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));  //не понятно
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));  //не понятно
 
         WebElement passwordField = new WebDriverWait(driver, Duration.ofSeconds(20))
                 .until(ExpectedConditions.elementToBeClickable(By.xpath("//input[@name='password']")));
