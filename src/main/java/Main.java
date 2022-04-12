@@ -12,37 +12,28 @@ public class Main {
     public static void main(String[] args) {
         System.setProperty("webdriver.chrome.driver", "D:\\chromedriver.exe");
         WebDriver driver = new ChromeDriver();
+        driver.get("https://mail.ru/");
 
-        String userName = "test123456789te5t";
+        String username = "test123456789te5t";
         String password = "AOaTUo)iea12";
 
-        final String URL = "https://mail.ru/";
+        LoginPage loginPage = new LoginPage(driver);
 
-        driver.get(URL);
+        loginPage.pressLoginButton()
+                .switchToLoginFrame()
+                .typeUsername(username)
+                .typePassword(password)
+                .pressSubmitButton()
+                .pressSendLetterButton()
+                .pressSaveButton();
 
-        driver.findElement(By.xpath("//button[@data-testid='enter-mail-primary']")).click();
-
-        WebElement loginFrame = new WebDriverWait(driver, Duration.ofSeconds(10))
-                .until(ExpectedConditions.presenceOfElementLocated(By.xpath("//iframe[@class='ag-popup__frame__layout__iframe']")));
-        driver.switchTo().frame(loginFrame);
-
-        WebElement loginField = new WebDriverWait(driver, Duration.ofSeconds(10))
-                .until(ExpectedConditions.presenceOfElementLocated(By.xpath("//input[@name='username']")));
-        loginField.sendKeys(userName + Keys.ENTER);
-
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));  //не понятно
-
-        WebElement passwordField = new WebDriverWait(driver, Duration.ofSeconds(20))
-                .until(ExpectedConditions.elementToBeClickable(By.xpath("//input[@name='password']")));
-        passwordField.sendKeys(password + Keys.ENTER);
-
-        WebElement sendLetterField = new WebDriverWait(driver, Duration.ofSeconds(10))
-                .until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@title='Написать письмо']")));
-        sendLetterField.click();
-
-        driver.findElement(By.xpath("//div[@tabindex='505']")).sendKeys("some text");
-
-        driver.findElement(By.xpath("//span[@title='Сохранить']")).click();
+//        loginPage.pressLoginButton();
+//        loginPage.switchToLoginFrame();
+//        loginPage.typeUsername(username);
+//        loginPage.typePassword(password);
+//        loginPage.pressSubmitButton()
+//                .pressSendLetterButton()
+//                .pressSaveButton();
 
         driver.quit();
         System.out.println("test passed");
