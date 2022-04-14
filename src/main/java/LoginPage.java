@@ -7,7 +7,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
 
-public class LoginPage {
+public class LoginPage extends BasePage{
 
     private By loginButtonLocator = By.xpath("//button[@data-testid='enter-mail-primary']");
     private By usernameLocator = By.xpath("//input[@name='username']");
@@ -15,36 +15,32 @@ public class LoginPage {
     private By loginFrameLocator = By.xpath("//iframe[@class='ag-popup__frame__layout__iframe']");
     private By submitButtonLocator = By.xpath("//button[@data-test-id='submit-button']");
 
-    private final WebDriver driver;
-
-    public LoginPage(WebDriver driver){
-        this.driver = driver;
+    public LoginPage(WebDriver driver) {
+        super(driver);
     }
 
     public LoginPage pressLoginButton(){
-        driver.findElement(loginButtonLocator).click();
+        click(loginButtonLocator);
         return this;
     }
 
     public LoginPage switchToLoginFrame(){
-        driver.switchTo().frame(driver.findElement(loginFrameLocator));
+        switchToFrame(loginFrameLocator);
         return this;
     }
 
     public LoginPage typeUsername(String username){
-        new WebDriverWait(driver, Duration.ofSeconds(10))
-                .until(ExpectedConditions.presenceOfElementLocated(usernameLocator)).sendKeys(username + Keys.ENTER);
+        type(usernameLocator, username, Keys.ENTER);
         return this;
     }
 
     public LoginPage typePassword(String password){
-        new WebDriverWait(driver, Duration.ofSeconds(10))
-                .until(ExpectedConditions.elementToBeClickable(passwordLocator)).sendKeys(password);
+        type(passwordLocator, password, Keys.ENTER);
         return this;
     }
 
     public MailPage pressSubmitButton(){
-        driver.findElement(submitButtonLocator).click();
+        click(submitButtonLocator);
         return new MailPage(driver);
     }
 
